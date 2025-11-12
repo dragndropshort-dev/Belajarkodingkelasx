@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Belajar JavaScript Interaktif</title>
+<style>
+  body { font-family: Arial, sans-serif; background: #f3f4f6; margin: 0; padding: 20px; }
+  h1 { text-align: center; color: #222; }
+  .container { max-width: 800px; margin: auto; background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+  select, textarea, button { width: 100%; font-size: 16px; margin: 8px 0; }
+  textarea { height: 150px; font-family: monospace; padding: 10px; border-radius: 8px; border: 1px solid #ccc; resize: vertical; }
+  button { background: #2563eb; color: white; border: none; padding: 10px; border-radius: 8px; cursor: pointer; }
+  button:hover { background: #1d4ed8; }
+  .output { background: #111; color: #0f0; padding: 10px; min-height: 100px; font-family: monospace; border-radius: 8px; margin-top: 10px; }
+  footer { text-align: center; margin-top: 25px; font-size: 14px; color: #555; }
+  footer span { color: #2563eb; font-weight: bold; }
+</style>
+</head>
+<body>
+
+<h1>💡 Belajar Koding Interaktif</h1>
+<div class="container">
+
+  <label>Pilih Materi:</label>
+  <select id="materi" onchange="loadMateri()">
+    <option value="">-- Pilih Materi --</option>
+    <option value="output">1. Output (console.log, alert, document.write)</option>
+    <option value="variabel">2. Variabel</option>
+    <option value="ifelse">3. Kondisi (if else)</option>
+    <option value="looping">4. Perulangan</option>
+    <option value="fungsi">5. Fungsi</option>
+  </select>
+
+  <label>Ketik Kode JavaScript Anda:</label>
+  <textarea id="editor"></textarea>
+
+  <button onclick="jalankanKode()">▶ Jalankan Kode</button>
+
+  <h3>Hasil Output:</h3>
+  <div id="output" class="output"></div>
+
+</div>
+
+<footer>
+  Developed by <span>Ach. Choirur Roziqin, S.AB</span>
+</footer>
+
+<script>
+const editor = document.getElementById("editor");
+const output = document.getElementById("output");
+
+const contohKode = {
+  output: `console.log("Halo Dunia!");
+alert("Selamat belajar JavaScript!");
+document.write("Ini contoh output di halaman web");`,
+  variabel: `let nama = "Budi";
+let umur = 17;
+console.log("Nama saya " + nama + ", umur " + umur + " tahun.");`,
+  ifelse: `let nilai = 80;
+if (nilai >= 75) {
+  console.log("Lulus 🎉");
+} else {
+  console.log("Belum Lulus 😢");
+}`,
+  looping: `for (let i = 1; i <= 5; i++) {
+  console.log("Perulangan ke-" + i);
+}`,
+  fungsi: `function sapa(nama) {
+  console.log("Halo " + nama + "!");
+}
+sapa("Ani");
+sapa("Budi");`
+};
+
+function loadMateri() {
+  const value = document.getElementById("materi").value;
+  editor.value = contohKode[value] || "";
+  output.textContent = "";
+}
+
+function jalankanKode() {
+  output.textContent = "";
+  const kode = editor.value;
+  try {
+    const logAsli = console.log;
+    console.log = function(...args) {
+      output.textContent += args.join(" ") + "\\n";
+      logAsli.apply(console, args);
+    };
+    new Function(kode)();
+    console.log = logAsli;
+  } catch (err) {
+    output.textContent = "⚠️ Error: " + err.message;
+  }
+}
+</script>
+
+</body>
+</html>
